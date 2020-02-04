@@ -114,11 +114,9 @@ module.exports = function(crowi, req, locals) {
     return crowi.passportService.getSamlMissingMandatoryConfigKeys();
   };
 
-  locals.searchConfigured = function() {
-    if (crowi.getSearcher()) {
-      return true;
-    }
-    return false;
+  locals.isSearchServiceConfigured = function() {
+    const { searchService } = crowi;
+    return searchService.isConfigured;
   };
 
   locals.isHackmdSetup = function() {
@@ -156,7 +154,7 @@ module.exports = function(crowi, req, locals) {
 
   locals.isTrashPage = function() {
     const path = req.path || '';
-    if (path.match(/^\/trash\/.*/)) {
+    if (path.match(/^\/trash(\/.*)?$/)) {
       return true;
     }
 

@@ -9,6 +9,10 @@ const router = express.Router();
 const { body } = require('express-validator/check');
 const { isEmail } = require('validator');
 
+const ErrorV3 = require('../../models/vo/error-apiv3');
+
+const PAGE_ITEMS = 50;
+
 const validator = {};
 
 /**
@@ -17,6 +21,48 @@ const validator = {};
  *    name: Users
  */
 
+/**
+ * @swagger
+ *
+ *  components:
+ *    schemas:
+ *      User:
+ *        description: User
+ *        type: object
+ *        properties:
+ *          _id:
+ *            type: string
+ *            description: user ID
+ *            example: 5ae5fccfc5577b0004dbd8ab
+ *          lang:
+ *            type: string
+ *            description: language
+ *            example: 'en-US'
+ *          status:
+ *            type: integer
+ *            description: status
+ *            example: 0
+ *          admin:
+ *            type: boolean
+ *            description: whether the admin
+ *            example: false
+ *          email:
+ *            type: string
+ *            description: E-Mail address
+ *            example: alice@aaa.aaa
+ *          username:
+ *            type: string
+ *            description: username
+ *            example: alice
+ *          name:
+ *            type: string
+ *            description: full name
+ *            example: Alice
+ *          createdAt:
+ *            type: string
+ *            description: date created at
+ *            example: 2010-01-01T00:00:00.000Z
+ */
 
 module.exports = (crowi) => {
   const loginRequiredStrictly = require('../../middleware/login-required')(crowi);
@@ -24,7 +70,6 @@ module.exports = (crowi) => {
   const csrf = require('../../middleware/csrf')(crowi);
 
   const {
-    ErrorV3,
     User,
     Page,
     ExternalAccount,
@@ -36,9 +81,11 @@ module.exports = (crowi) => {
    * @swagger
    *
    *  paths:
-   *    /_api/v3/users:
+   *    /users:
    *      get:
    *        tags: [Users]
+   *        operationId: listUsers
+   *        summary: /users
    *        description: Get users
    *        responses:
    *          200:
@@ -47,21 +94,27 @@ module.exports = (crowi) => {
    *              application/json:
    *                schema:
    *                  properties:
-   *                    users:
-   *                      type: object
-   *                      description: a result of `Users.find`
+   *                    paginateResult:
+   *                      $ref: '#/components/schemas/PaginateResult'
    */
   router.get('/', loginRequiredStrictly, adminRequired, async(req, res) => {
+    const page = parseInt(req.query.page) || 1;
+
     try {
-      const page = parseInt(req.query.page) || 1;
-      const result = await User.findUsersWithPagination({ page });
-      const { docs: users, total: totalUsers, limit: pagingLimit } = result;
-      return res.apiv3({ users, totalUsers, pagingLimit });
+      const paginateResult = await User.paginate(
+        { status: { $ne: User.STATUS_DELETED } },
+        {
+          sort: { status: 1, username: 1, createdAt: 1 },
+          page,
+          limit: PAGE_ITEMS,
+        },
+      );
+      return res.apiv3({ paginateResult });
     }
     catch (err) {
       const msg = 'Error occurred in fetching user group list';
       logger.error('Error', err);
-      return res.apiv3Err(new ErrorV3(msg, 'user-group-list-fetch-failed'));
+      return res.apiv3Err(new ErrorV3(msg, 'user-group-list-fetch-failed'), 500);
     }
   });
 
@@ -80,9 +133,11 @@ module.exports = (crowi) => {
    * @swagger
    *
    *  paths:
-   *    /_api/v3/users/invite:
+   *    /users/invite:
    *      post:
    *        tags: [Users]
+   *        operationId: inviteUser
+   *        summary: /users/invite
    *        description: Create new users and send Emails
    *        parameters:
    *          - name: shapedEmailList
@@ -111,8 +166,8 @@ module.exports = (crowi) => {
    */
   router.post('/invite', loginRequiredStrictly, adminRequired, csrf, validator.inviteEmail, ApiV3FormValidator, async(req, res) => {
     try {
-      const emailList = await User.createUsersByInvitation(req.body.shapedEmailList, req.body.sendEmail);
-      return res.apiv3({ emailList });
+      const invitedUserList = await User.createUsersByInvitation(req.body.shapedEmailList, req.body.sendEmail);
+      return res.apiv3({ invitedUserList });
     }
     catch (err) {
       logger.error('Error', err);
@@ -123,9 +178,11 @@ module.exports = (crowi) => {
    * @swagger
    *
    *  paths:
-   *    /_api/v3/users/{id}/giveAdmin:
+   *    /users/{id}/giveAdmin:
    *      put:
    *        tags: [Users]
+   *        operationId: giveAdminUser
+   *        summary: /users/{id}/giveAdmin
    *        description: Give user admin
    *        parameters:
    *          - name: id
@@ -162,9 +219,11 @@ module.exports = (crowi) => {
    * @swagger
    *
    *  paths:
-   *    /_api/v3/users/{id}/removeAdmin:
+   *    /users/{id}/removeAdmin:
    *      put:
    *        tags: [Users]
+   *        operationId: removeAdminUser
+   *        summary: /users/{id}/removeAdmin
    *        description: Remove user admin
    *        parameters:
    *          - name: id
@@ -201,9 +260,11 @@ module.exports = (crowi) => {
    * @swagger
    *
    *  paths:
-   *    /_api/v3/users/{id}/activate:
+   *    /users/{id}/activate:
    *      put:
    *        tags: [Users]
+   *        operationId: activateUser
+   *        summary: /users/{id}/activate
    *        description: Activate user
    *        parameters:
    *          - name: id
@@ -248,9 +309,11 @@ module.exports = (crowi) => {
    * @swagger
    *
    *  paths:
-   *    /_api/v3/users/{id}/deactivate:
+   *    /users/{id}/deactivate:
    *      put:
    *        tags: [Users]
+   *        operationId: deactivateUser
+   *        summary: /users/{id}/deactivate
    *        description: Deactivate user
    *        parameters:
    *          - name: id
@@ -287,9 +350,11 @@ module.exports = (crowi) => {
    * @swagger
    *
    *  paths:
-   *    /_api/v3/users/{id}/remove:
+   *    /users/{id}/remove:
    *      delete:
    *        tags: [Users]
+   *        operationId: removeUser
+   *        summary: /users/{id}/remove
    *        description: Delete user
    *        parameters:
    *          - name: id
@@ -326,5 +391,81 @@ module.exports = (crowi) => {
     }
   });
 
+  /**
+   * @swagger
+   *
+   *  paths:
+   *    /users/external-accounts:
+   *      get:
+   *        tags: [Users]
+   *        operationId: listExternalAccountsUsers
+   *        summary: /users/external-accounts
+   *        description: Get external-account
+   *        responses:
+   *          200:
+   *            description: external-account are fetched
+   *            content:
+   *              application/json:
+   *                schema:
+   *                  properties:
+   *                    paginateResult:
+   *                      $ref: '#/components/schemas/PaginateResult'
+   */
+  router.get('/external-accounts/', loginRequiredStrictly, adminRequired, async(req, res) => {
+    const page = parseInt(req.query.page) || 1;
+    try {
+      const paginateResult = await ExternalAccount.findAllWithPagination({ page });
+      return res.apiv3({ paginateResult });
+    }
+    catch (err) {
+      const msg = 'Error occurred in fetching external-account list  ';
+      logger.error(msg, err);
+      return res.apiv3Err(new ErrorV3(msg + err.message, 'external-account-list-fetch-failed'), 500);
+    }
+  });
+
+
+  /**
+   * @swagger
+   *
+   *  paths:
+   *    /users/external-accounts/{id}/remove:
+   *      delete:
+   *        tags: [Users]
+   *        operationId: removeExternalAccountUser
+   *        summary: /users/external-accounts/{id}/remove
+   *        description: Delete ExternalAccount
+   *        parameters:
+   *          - name: id
+   *            in: path
+   *            required: true
+   *            description: id of ExternalAccount
+   *            schema:
+   *              type: string
+   *        responses:
+   *          200:
+   *            description:  External Account is removed
+   *            content:
+   *              application/json:
+   *                schema:
+   *                  properties:
+   *                    externalAccount:
+   *                      type: object
+   *                      description: A result of `ExtenralAccount.findByIdAndRemove`
+   */
+  router.delete('/external-accounts/:id/remove', loginRequiredStrictly, adminRequired, ApiV3FormValidator, async(req, res) => {
+    const { id } = req.params;
+
+    try {
+      const externalAccount = await ExternalAccount.findByIdAndRemove(id);
+
+      return res.apiv3({ externalAccount });
+    }
+    catch (err) {
+      const msg = 'Error occurred in deleting a external account  ';
+      logger.error(msg, err);
+      return res.apiv3Err(new ErrorV3(msg + err.message, 'extenral-account-delete-failed'));
+    }
+  });
   return router;
 };

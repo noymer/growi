@@ -28,13 +28,11 @@
   "Page Path": "Page Path",
   "Category": "Category",
   "User": "User",
-  "status":"Status",
+  "status": "Status",
   "account_id": "Account Id",
-
   "Update": "Update",
   "Update Page": "Update Page",
   "Warning": "Warning",
-
   "Sign in": "Sign in",
   "Sign up is here": "Sign up",
   "Sign in is here": "Sign in",
@@ -44,30 +42,23 @@
   "Sign up with this Google Account": "Sign up with this Google Account",
   "Example": "Example",
   "Taro Yamada": "John Doe",
-
   "List View": "List",
   "Timeline View": "Timeline",
   "History": "History",
   "Presentation Mode": "Presentation",
-
   "username": "Username",
   "Created": "Created",
   "Last updated": "Updated",
   "Last_Login": "Last Login",
-
   "Share": "Share",
   "Share Link": "Share Link",
   "Markdown Link": "Markdown Link",
-
   "Create/Edit Template": "Create/Edit Template Page",
-
   "Unportalize": "Unportalize",
-
   "Go to this version": "View this version",
   "View diff": "View diff",
   "No diff": "No diff",
   "Shrink versions that have no diffs": "Shrink versions that have no diffs",
-
   "User ID": "User ID",
   "Home": "Home",
   "User Settings": "User Settings",
@@ -89,19 +80,15 @@
   "Show": "Show",
   "Hide": "Hide",
   "Disclose E-mail": "Disclose E-mail",
-
   "page exists": "this page already exists",
   "Error occurred": "Error occurred",
-
   "Create today's": "Create today's ...",
   "Memo": "memo",
   "Input page name": "Input page name",
   "Input page name (optional)": "Input page name (optional)",
   "New Page": "New Page",
   "Create under": "Create page under below:",
-
   "Table of Contents": "Table of Contents",
-
   "Management Wiki Home": "Management Wiki Home",
   "App Settings": "App Settings",
   "Site URL settings": "Site URL settings",
@@ -113,7 +100,7 @@
   "UserGroup Management": "UserGroup Management",
   "Full Text Search Management": "Full Text Search Management",
   "Import Data": "Import Data",
-  "Export Data": "Export Data",
+  "Export Archive Data": "Export Archive Data",
   "Basic Settings": "Basic Settings",
   "Basic authentication": "Basic authentication",
   "Register limitation": "Register limitation",
@@ -129,30 +116,24 @@
   "Add tags for this page": "Add tags for this page",
   "Edit tags for this page": "Edit tags for this page",
   "You have no tag, You can set tags on pages": "You have no tag, You can set tags on pages",
-
   "Show latest": "Show latest",
   "Load latest": "Load latest",
   "edited this page": "edited this page.",
-
   "List Drafts": "Drafts",
   "Deleted Pages": "Deleted Pages",
   "Sign out": "Logout",
-
   "form_validation": {
     "required": "<code>%s</code> is required"
   },
-
   "installer": {
     "setup": "Setup",
     "create_initial_account": "Create an initial account",
     "initial_account_will_be_administrator_automatically": "The initial account will be administrator automatically.",
     "unavaliable_user_id": "This 'User ID' is unavailable."
   },
-
   "breaking_changes": {
     "v346_using_basic_auth": "Basic Authentication currently in use will <strong>no longer be available</strong> in the near future. Remove settings from %s"
   },
-
   "page_register": {
     "notice": {
       "restricted": "Admin approval required.",
@@ -164,7 +145,6 @@
       "user_id": "The URL of pages you create will contain your User ID. Your User ID can consist of letters, numbers, and some symbols."
     }
   },
-
   "page_me": {
     "form_help": {
       "profile_image1": "Image upload settings not completed.",
@@ -177,10 +157,8 @@
       "update_token1": "You can update to generate a new API Token.",
       "update_token2": "You will need to update the API Token in any existing processes."
     },
-    "form_help": {
-    }
+    "form_help": {}
   },
-
   "Password": "Password",
   "Password Settings": "Password Settings",
   "Set new Password": "Set new Password",
@@ -189,14 +167,11 @@
   "New password": "New password",
   "Re-enter new password": "Re-enter new password",
   "Password is not set": "Password is not set",
-
   "security_settings": "Security Settings",
-
   "API Settings": "API Settings",
   "API Token Settings": "API Token Settings",
   "Current API Token": "Current API Token",
   "Update API Token": "Update API Token",
-
   "header_search_box": {
     "label": {
       "This tree": "This tree"
@@ -205,7 +180,6 @@
       "This tree": "Only children of this tree"
     }
   },
-
   "copy_to_clipboard": {
     "Copy to clipboard": "Copy to clipboard",
     "Page path": "Page path",
@@ -213,7 +187,6 @@
     "Page path and parmanent link": "Page path and parmanent link",
     "Markdown link": "Markdown link"
   },
-
   "search_help": {
     "title": "Searching Help",
     "and": {
@@ -243,7 +216,6 @@
   "search": {
     "search page bodies": "Hit [Enter] key to full-text search"
   },
-
   "page_page": {
     "notice": {
       "version": "This is not the current version.",
@@ -251,10 +223,11 @@
       "redirected": "You are redirected from <code>%s</code>",
       "duplicated": "This page was duplicated from <code>%s</code>",
       "unlinked": "Redirect pages to this page have been deleted.",
-      "restricted": "Access to this page is restricted"
+      "restricted": "Access to this page is restricted",
+      "stale": "More than {{count}} year has passed since last update.",
+      "stale_plural": "More than {{count}} years has passed since last update."
     }
   },
-
   "page_edit": {
     "Show active line": "Show active line",
     "overwrite_scopes": "{{operation}} and Overwrite scopes of all descendants",
@@ -262,14 +235,12 @@
       "conflict": "Couldn't save the changes you made because someone else was editing this page. Please re-edit the affected section after reloading the page."
     }
   },
-
   "page_api_error": {
     "notfound_or_forbidden": "Original page is not found or forbidden.",
     "already_exists": "New page is already exists.",
     "outdated": "Page is updated someone and now outdated.",
     "user_not_admin": "Only admin user can delete completely"
   },
-
   "modal_rename": {
     "label": {
       "Move/Rename page": "Move/Rename page",
@@ -285,10 +256,8 @@
       "recursive": "Move/Rename children of under <code>%s</code> recursively"
     }
   },
-
   "Put Back": "Put Back",
   "Delete Completely": "Delete Completely",
-
   "modal_delete": {
     "delete_page": "Delete Page",
     "deleting_page": "Deleting Page",
@@ -298,7 +267,6 @@
     "recursively": "Delete children of under <code>%s</code> recursively.",
     "completely": "Delete completely instead of putting it into trash."
   },
-
   "modal_duplicate": {
     "label": {
       "Duplicate page": "Duplicate page",
@@ -306,7 +274,6 @@
       "Current page name": "Current page name"
     }
   },
-
   "modal_putback": {
     "label": {
       "Put Back Page": "Put Back Page",
@@ -316,7 +283,6 @@
       "recursively": "Put Back children of under <code>%s</code> recursively"
     }
   },
-
   "modal_shortcuts": {
     "global": {
       "title": "Global shortcuts",
@@ -339,7 +305,15 @@
       "Post": "Post"
     }
   },
-
+  "toaster": {
+    "update_successed": "Succeeded to update {{target}}",
+    "give_user_admin": "Succeeded to give {{username}} admin",
+    "remove_user_admin": "Succeeded to remove {{username}} admin ",
+    "activate_user_success": "Succeeded to activating {{username}}",
+    "deactivate_user_success": "Succeeded to deactivate {{username}}",
+    "remove_user_success": "Succeeded to removing {{username}} ",
+    "remove_external_user_success": "Succeeded to remove {{accountId}} "
+  },
   "template": {
     "modal_label": {
       "Create/Edit Template Page": "Create/Edit Template Page",
@@ -358,7 +332,6 @@
       "desc": "Applies to all decendant pages"
     }
   },
-
   "sandbox": {
     "header": "Header",
     "header_x": "Header {{index}}",
@@ -390,69 +363,18 @@
     "insert_image": "inserts an image",
     "open_sandbox": "Open Sandbox"
   },
-
-  "admin_top": {
-    "Management Wiki": "Management Wiki",
-    "System Information": "System Information",
-    "wiki_administrator": "Only Wiki administrator can access this page",
-    "assign_administrator": "You can assign administrator from Assign administrator button in the User management page",
-    "List of installed plugins": "List of installed plugins",
-    "Package name": "Package name",
-    "Specified version": "Specified version",
-    "Installed version": "Installed version"
-  },
-
-  "app_setting": {
-    "Site Name": "Site name",
-    "sitename_change": "You can change Site Name which is used for header and HTML title.",
-    "header_content": "The contents entered here will be shown in the header etc.",
-    "Site URL desc": "This is for the site URL setting.",
-    "Site URL warn": "Some features don't work because the site URL is not set.",
-    "siteurl_help": "Site full URL beginning from <code>http://</code> or <code>https://</code>.",
-    "Confidential name": "Confidential name",
-    "Default Language for new users": "Default Language for new users",
-    "ex): internal use only":"ex): internal use only",
-    "File Uploading": "File Uploading",
-    "enable_files_except_image": "Enable file upload other than image files.",
-    "attach_enable": "You can attach files other than image files if you enable this option.",
-    "Update": "Update",
-    "Mail settings": "Mail settings",
-    "SMTP_used": "If you have SMTP settings, it will be used.",
-    "SMTP_but_AWS": "If you do not have SMTP settings but AWS settings,  e-mails will be sent by SES.",
-    "neihter_of": "If you do not of neither of these, e-mails will not be sent.",
-    "From e-mail address": "From e-mail address",
-    "SMTP settings": "SMTP settings"  ,
-    "Host": "Host",
-    "Port": "Port",
-    "User": "User",
-    "AWS settings": "AWS settings",
-    "AWS_access": "This is for AWS settings. If you complete AWS settings, file upload function, profile picture function etc will be enabled.",
-    "No_SMTP_setting": "If you do not have SMTP settings, e-mails will be sent via SES. You need to verify from e-mail address and production settings.",
-    "change_setting": "Caution:if you change this setting not completed, you will not be able to access files you have uploaded so far.",
-    "region": "Region",
-    "bucket name": "Bucket name",
-    "custom endpoint": "Custom endpoint",
-    "custom_endpoint_change": "Input the URL of the endpoint of an object storage service like MinIO that has a S3-compatible API.  Amazon S3 is used if empty.",
-    "Plugin settings": "Plugin settings",
-    "Enable plugin loading": "Enable plugin loading",
-    "Load plugins": "Load plugins",
-    "Enable": "Enable",
-    "Disable": "Disable",
-    "Use env var if empty": "If the value in the database is empty, the value of the environment variable <code>%s</code> is used."
-  },
-
   "security_setting": {
-		"Security settings": "Security settings",
+    "Security settings": "Security settings",
     "Guest Users Access": "Guest Users Access",
     "Fixed by env var": "This is fixed by the env var <code>%s=%s</code>.",
     "Register limitation": "Register limitation",
     "Register limitation desc": "Restricts ways to register new user.",
-		"The whitelist of registration permission E-mail address": "The whitelist of registration permission E-mail address",
-		"users_without_account": "Users without account is not accessible",
+    "The whitelist of registration permission E-mail address": "The whitelist of registration permission E-mail address",
+    "users_without_account": "Users without account is not accessible",
     "example": "Example",
     "restrict_emails": "You can restrict registerable e-mail address.",
-		"for_instance": " For instance, if you use growi within a company, you can write ",
-		"only_those": " Only those whose e-mail address including the company address can register.",
+    "for_instance": " For instance, if you use growi within a company, you can write ",
+    "only_those": " Only those whose e-mail address including the company address can register.",
     "insert_single": "Please insert single e-mail address per line.",
     "page_listing_1": "Page listing/searching<br>restricted by 'Just Me'",
     "page_listing_1_desc": "Show pages that are restricted by 'Just Me' option when listing/searching",
@@ -463,11 +385,10 @@
     "admin_only": "Admin Only",
     "admin_and_author": "Admin and Author",
     "anyone": "Anyone",
-
-		"Authentication mechanism settings": "Authentication Mechanism Settings",
+    "Authentication mechanism settings": "Authentication Mechanism Settings",
     "alert_siteUrl_is_not_set": "'Site URL' is NOT set. Set it from the %s",
-    "xss_prevent_setting":"Prevent XSS(Cross Site Scripting)",
-    "xss_prevent_setting_link":"Go to Markdown settings",
+    "xss_prevent_setting": "Prevent XSS(Cross Site Scripting)",
+    "xss_prevent_setting_link": "Go to Markdown settings",
     "callback_URL": "Callback URL",
     "providerName": "Provider Name",
     "issuerHost": "Issuer Host",
@@ -599,43 +520,32 @@
       "security:passport-saml:attrMapFirstName": "First Name",
       "security:passport-saml:attrMapLastName": "Last Name"
     }
-	},
-
-  "markdown_setting": {
-    "line_break_setting": "Line Break Setting",
-    "line_break_setting_desc": "You can change line break settings.",
-    "Enable Line Break": "Enable Line Break",
-    "Enable Line Break desc": "Treat line break in the text page as <code>&lt;br&gt;</code> in HTML",
-    "Enable Line Break for comment": "Enable Line Break in comment",
-    "Enable Line Break for comment desc": "Treat line break in comment as <code>&lt;br&gt;</code> in HTML",
-    "presentation_setting": "Presentation Setting",
-    "presentation_setting_desc": "You can change presentation settings.",
-    "Page break setting": "Page break Setting",
-    "Preset one separator": "Preset 1",
-    "Preset one separator desc": "3 Blank lines",
-    "Preset one separator value": "\\n\\n\\n",
-    "Preset two separator": "Preset 2",
-    "Preset two separator desc": "5 Hyphens",
-    "Preset two separator value": "-----",
-    "Custom separator": "Custom",
-    "Custom separator desc": "Regular Expression",
-    "XSS_setting": "Prevent XSS(Cross Site Scripting) Setting",
-    "XSS_setting_desc": "You can change the handling of HTML tags in markdown text.",
-    "Enable XSS prevention": "Enable XSS Prevention",
-    "Ignore all tags": "Ignore All Tags",
-    "Ignore all tags desc": "Stripe all HTML tags and attributes",
-    "Recommended setting": "Recommended Setting",
-    "Custom Whitelist": "Custom Whitelist",
-    "Tag names":"Tag names",
-    "Tag attributes":"Tag attributes",
-    "import_recommended": "Import recommended %s"
   },
-
   "notification_setting": {
+    "slack_incoming_configuration": "Slack Incoming Webhooks Configuration",
+    "prioritize_webhook": "Prioritize Incoming Webhook than Slack App",
+    "prioritize_webhook_desc": "Check this option and GROWI use Incoming Webhooks even if Slack App settings are enabled.",
+    "slack_app_configuration": "Slack App Configuration",
+    "slack_app_configuration_desc": "This is the way that compatible with Crowi,<br /> but not recommended in GROWI because it is <strong>too complex</strong>.",
+    "use_instead":"Please use Slack Incoming Webhooks Configuration instead.",
+    "how_to": {
+      "header": "How to configure Incoming Webhooks?",
+      "workspace": "(At Workspace) Add a hook",
+      "workspace_desc1": "Go to <a href='https: //slack.com/services/new/incoming-webhook'>Incoming Webhooks Configuration page</a>.",
+      "workspace_desc2": "Choose the default channel to post.",
+      "workspace_desc3": "Add.",
+      "at_growi": "(At GROWI admin page) Set Webhook URL",
+      "at_growi_desc": "Input &rdquo;Webhook URL&rdquo; and submit on this page."
+    },
+    "user_trigger_notification_header": "Default Notification Settings for Patterns",
+    "pattern": "Pattern",
+    "channel": "Channel",
+    "pattern_desc": "Path name of wiki. Pattern expression with <code>*</code> can be used.",
+    "channel_desc": "Slack channel name. Without <code>#</code>.",
     "notification_list": "List of Notification Settings",
     "add_notification": "Add New",
     "trigger_path": "Trigger Path",
-    "trigger_path_help": "(expression with %s is supported)",
+    "trigger_path_help": "(expression with <code>*</code> is supported)",
     "trigger_events": "Trigger Events",
     "notify_to": "Notify To",
     "back_to_list": "Go back to list",
@@ -648,156 +558,43 @@
     "event_comment": "When someone \"COMMENTS\" on page",
     "email": {
       "ifttt_link": "Create a new IFTTT applet with Email trigger"
-    }
-  },
-
-  "customize_page": {
-    "Behavior": "Behavior",
-    "Layout": "Layout",
-    "Function": "Function",
-    "function_choose": "You can choose Valid/Invalid of the function",
-    "Timeline function": "Timeline function",
-    "Code Highlight": "Code Highlight",
-    "Theme": "Theme",
-    "subpage_display": "You can show the timeline of the subpages.",
-    "performance_decrease": "If there are many subpages, performance decreases while page loading.",
-    "list_page_display": "You can speed up list page display by invalidating.",
-    "tab_switch": "Save tab-switching in the browser",
-    "save_edit": "Save edit tab and history tab switching in the browser and make it object for forward/back command of the browser.",
-    "by_invalidating": "By invalidating, you can make page transition as the only object for forward/back command of the browser.",
-    "nocdn_desc": "This function is disabled when the environment variable <code>NO_CDN=true</code>.<br>Github style has been forcibly applied.",
-    "custom_title": "Custom Title",
-    "custom_title_detail": "You can customize <code>%s</code> tag.<br><code>%s</code> will be automatically replaced with the app name, and <code>%s</code> will be replaced with the page name/path.",
-    "custom_header": "Custom HTML Header",
-    "custom_header_detail": "You can customize HTML header that applies all pages. Your custom script will be inserted in <code>%s</code> but above other <code>%s</code> tags.<br>Relaod page to see changes.",
-    "Custom CSS": "Custom CSS",
-    "write_CSS": "You can write CSS that is applied to whole system.",
-    "reflect_change": "You need to reload the page to reflect the change.",
-    "ctrl_space": "Ctrl+Space to Autocomplete",
-    "Custom script": "Custom script",
-    "write_java": "You can write Javascript that is applied to whole system.",
-    "attach_title_header": "Add h1 section when create new page automatically",
-    "attach_title_header_desc": "Add page path to the first line as h1 section when create new page",
-    "recent_created__n_draft_num_desc": "Number of Recently Created Pages & Drafts Displayed",
-    "recently_created_n_draft_num_desc": "Number of recently created pages and drafts displayed on user page"
-  },
-
-  "user_management": {
-    "target_user": "Target User",
-    "new_password": "New Password",
-    "invite_users": "Invite New Users",
-    "emails": "Emails",
-    "invite_thru_email": "Send Invitation Email",
-    "invite": "Invite",
-    "invited": "User was invited",
-    "give_admin_access": "Give Admin Access",
-    "remove_admin_access": "Remove Admin Access",
-    "external_account": "External Account Management",
-    "external_account_list": "External Account List",
-    "back_to_user_management": "Back to User Management",
-    "authentication_provider": "Authentication Provider",
-    "manage": "Manage",
-    "edit_menu": "Edit Menu",
-    "password_setting": "Password Setting",
-    "password_setting_help": "Is password set?",
-    "set": "Yes",
-    "unset": "No",
-    "temporary_password": "The created user has a temporary password",
-    "send_temporary_password": "Be sure to copy the temporary password ON THIS SCREEN and send it to the user.",
-    "password_reset_message": "Let the user know the new password below and strongly recommend to change another one immediately.",
-    "send_new_password": "Please send the new password to the user.",
-    "password_never_seen": "The temporary password can never be retrieved after this screen is closed.",
-    "reset_password": "Reset Password",
-    "related_username": "Related user's <code>%s</code>",
-    "accept": "Accept",
-    "deactivate_account":"Deactivate Account",
-    "your_own":"You cannot deactivate your own account",
-    "administrator_menu":"Administrator Menu",
-    "cannot_remove":"You cannot remove yourself from administrator",
-    "cannot_invite_maximum_users": "Can not invite more than the maximum number of users.",
-    "current_users": "Current users:",
-    "valid_email": "Valid email address is required",
-    "existing_email": "The following emails already exist",
-    "give_user_admin": "Give {{username}} admin success",
-    "remove_user_admin": "Remove {{username}} admin success",
-    "activate_user_success": "Activating {{username}} success",
-    "deactivate_user_success": "Deactivating {{username}} success",
-    "remove_user_success": "Removing {{username}} success"
-  },
-
-  "user_group_management": {
-    "group_list": "Group List",
-    "back_to_list": "Go Back to Group List",
-    "basic_info": "Basic Info",
-    "user_list": "User List",
-    "create_group": "Create New Group",
-    "group_example": "e.g. : Group1",
-    "created_group": "Group was created",
-    "add_user": "Add a User to the Created Group",
-    "deny_create_group": "You can't create a new group with the current settings",
-    "choose_action": "Choose an action for private pages",
-    "delete_group": "Delete Group",
-    "group_name": "Group Name",
-    "group_and_pages_not_retrievable": "Once deleted, the deleted group and its private pages cannot be retrieved",
-    "publish_pages": "Publish All",
-    "delete_pages": "Delete All",
-    "transfer_pages": "Transfer to another group",
-    "select_group": "Select a group",
-    "no_groups": "No groups to select",
-    "no_pages": "There are no pages the group has view permission",
-    "remove_from_group": "Remove this user"
-  },
-
-  "importer_management": {
-    "import_form_esa": "Import from esa.io",
-    "import_form_qiita": "import_from Qiita:Team",
-    "beta_warning": "This function is Beta.",
-    "import_from": "Import from %s",
-    "import_form_growi": "Import from GROWI",
-    "growi_settings": {
-      "overwrite_documents": "Imported documents will overwrite existing documents",
-      "zip_file": "Exported Zip File",
-      "uploaded_data": "Uploaded Data",
-      "extracted_file": "Extracted File",
-      "collection": "Collection",
-      "upload": "Upload",
-      "discard": "Discard Uploaded Data",
-      "errors": {
-        "at_least_one": "Select one or more collections.",
-        "page_and_revision": "'Pages' and 'Revisions' must be imported both.",
-        "depends": "'{{target}}' must be selected when '{{condition}}' is selected."
-      }
     },
-    "esa_settings": {
-      "team_name": "Team name",
-      "access_token": "Access token",
-      "test_connection": "Test connection to esa"
-    },
-    "qiita_settings": {
-      "team_name": "Team name",
-      "access_token": "Access token",
-      "test_connection": "Test connection to qiita:team"
-    },
-    "import": "Import",
-    "page_skip": "Pages with a name that already exists on GROWI are not imported",
-    "Directory_hierarchy_tag": "Directory Hierarchy Tag"
+    "updated_slackApp": "Succeeded to update Slack App Configuration setting",
+    "add_notification_pattern": "Add user trigger notification patterns",
+    "delete_notification_pattern": "Delete notification pattern",
+    "delete_notification_pattern_desc1": "Delete Path: {{path}}",
+    "delete_notification_pattern_desc2": "Once deleted, it cannot be recovered",
+    "toggle_notification": "Updated setting of {{path}}"
   },
-
-  "full_text_search_management":{
-    "elasticsearch_management":"Elasticsearch Management",
-    "build_button":"Rebuild Index",
-    "rebuild_description_1":"Force rebuild index.",
-    "rebuild_description_2":"Click 'Build Now' to delete and create mapping file and add all pages.",
-    "rebuild_description_3":"This may take a while."
+  "full_text_search_management": {
+    "elasticsearch_management": "Elasticsearch Management",
+    "connection_status": "Connection Status",
+    "connection_status_label_unconfigured": "UNCONFIGURED",
+    "connection_status_label_connected": "CONNECTED",
+    "connection_status_label_disconnected": "DISCONNECTED",
+    "indices_status": "Indices Status",
+    "indices_status_label_normalized": "NORMALIZED",
+    "indices_status_label_unnormalized": "REBUILDING or BROKEN",
+    "indices_summary": "Indices Summary",
+    "reconnect": "Reconnect",
+    "reconnect_button": "Try to Reconnect",
+    "reconnect_description": "Click the button to try to reconnect to Elasticsearch.",
+    "normalize": "Normalize",
+    "normalize_button": "Normalize Indices",
+    "normalize_description": "Click the button to repair broken indices.",
+    "rebuild": "Rebuild",
+    "rebuild_button": "Rebuild Index",
+    "rebuild_description_1": "Click the button to rebuild index and add all page datas.",
+    "rebuild_description_2": "This may take a while."
   },
   "export_management": {
-    "exporting_data_list": "Exporting Data List",
-    "exported_data_list": "Exported Data List",
+    "exporting_collection_list": "Exporting Collection List",
+    "exported_data_list": "Exported Archive Data List",
     "export_collections": "Export Collections",
     "check_all": "Check All",
     "uncheck_all": "Uncheck All",
     "desc_password_seed": "DO NOT FORGET to set current <code>PASSWORD_SEED</code> to your new GROWI system when restoring user data, or users will NOT be able to login with their password.<br><br><strong>HINT:</strong><br>The current <code>PASSWORD_SEED</code> will be stored in <code>meta.json</code> in exported ZIP.",
-    "create_new_exported_data": "Create New Exported Data",
+    "create_new_archive_data": "Create New Archive Data",
     "export": "Export",
     "cancel": "Cancel",
     "file": "File",

@@ -12,14 +12,12 @@ module.exports = function(crowi, app) {
   const actions = {};
 
   async function initSearchIndex() {
-    const search = crowi.getSearcher();
-    if (search == null) {
+    const { searchService } = crowi;
+    if (!searchService.isReachable) {
       return;
     }
 
-    await search.deleteIndex();
-    await search.buildIndex();
-    await search.addAllPages();
+    await searchService.rebuildIndex();
   }
 
   async function createInitialPages(owner, lang) {

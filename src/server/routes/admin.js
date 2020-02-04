@@ -9,24 +9,19 @@ module.exports = function(crowi, app) {
   const UserGroup = models.UserGroup;
   const UserGroupRelation = models.UserGroupRelation;
   const GlobalNotificationSetting = models.GlobalNotificationSetting;
-  const GlobalNotificationMailSetting = models.GlobalNotificationMailSetting;
-  const GlobalNotificationSlackSetting = models.GlobalNotificationSlackSetting; // eslint-disable-line no-unused-vars
 
   const {
     configManager,
     aclService,
     slackNotificationService,
-    customizeService,
     exportService,
   } = crowi;
 
   const recommendedWhitelist = require('@commons/service/xss/recommended-whitelist');
-  const PluginUtils = require('../plugins/plugin-utils');
   const ApiResponse = require('../util/apiResponse');
   const importer = require('../util/importer')(crowi);
 
   const searchEvent = crowi.event('search');
-  const pluginUtils = new PluginUtils();
 
   const MAX_PAGE_LIST = 50;
   const actions = {};
@@ -98,11 +93,12 @@ module.exports = function(crowi, app) {
   searchEvent.on('finishAddPage', (total, current, skip) => {
     crowi.getIo().sockets.emit('admin:finishAddPage', { total, current, skip });
   });
+  searchEvent.on('rebuildingFailed', (error) => {
+    crowi.getIo().sockets.emit('admin:rebuildingFailed', { error: error.message });
+  });
 
   actions.index = function(req, res) {
-    return res.render('admin/index', {
-      plugins: pluginUtils.listPlugins(crowi.rootDir),
-    });
+    return res.render('admin/index');
   };
 
   // app.get('/admin/app'                  , admin.app.index);
@@ -137,65 +133,12 @@ module.exports = function(crowi, app) {
     });
   };
 
-  // app.post('/admin/markdown/lineBreaksSetting' , admin.markdown.lineBreaksSetting);
-  actions.markdown.lineBreaksSetting = async function(req, res) {
-
-    const markdownSetting = req.form.markdownSetting;
-
-    if (req.form.isValid) {
-      await configManager.updateConfigsInTheSameNamespace('markdown', markdownSetting);
-      req.flash('successMessage', ['Successfully updated!']);
-    }
-    else {
-      req.flash('errorMessage', req.form.errors);
-    }
-    return res.redirect('/admin/markdown');
-
-  };
-
-  // app.post('/admin/markdown/presentationSetting' , admin.markdown.presentationSetting);
-  actions.markdown.presentationSetting = async function(req, res) {
-    const markdownSetting = req.form.markdownSetting;
-
-    if (req.form.isValid) {
-      await configManager.updateConfigsInTheSameNamespace('markdown', markdownSetting);
-      req.flash('successMessage', ['Successfully updated!']);
-    }
-    else {
-      req.flash('errorMessage', req.form.errors);
-    }
-
-    return res.redirect('/admin/markdown');
-  };
-
-  // app.post('/admin/markdown/xss-setting' , admin.markdown.xssSetting);
-  actions.markdown.xssSetting = async function(req, res) {
-    const xssSetting = req.form.markdownSetting;
-
-    xssSetting['markdown:xss:tagWhiteList'] = csvToArray(xssSetting['markdown:xss:tagWhiteList']);
-    xssSetting['markdown:xss:attrWhiteList'] = csvToArray(xssSetting['markdown:xss:attrWhiteList']);
-
-    if (req.form.isValid) {
-      await configManager.updateConfigsInTheSameNamespace('markdown', xssSetting);
-      req.flash('successMessage', ['Successfully updated!']);
-    }
-    else {
-      req.flash('errorMessage', req.form.errors);
-    }
-
-    return res.redirect('/admin/markdown');
-  };
-
-  const csvToArray = (string) => {
-    const array = string.split(',');
-    return array.map((item) => { return item.trim() });
-  };
-
   // app.get('/admin/customize' , admin.customize.index);
   actions.customize = {};
   actions.customize.index = function(req, res) {
     const settingForm = configManager.getConfigByPrefix('crowi', 'customize:');
 
+    // TODO delete after apiV3
     /* eslint-disable quote-props, no-multi-spaces */
     const highlightJsCssSelectorOptions = {
       'github':           { name: '[Light] GitHub',         border: false },
@@ -220,49 +163,8 @@ module.exports = function(crowi, app) {
   // app.get('/admin/notification'               , admin.notification.index);
   actions.notification = {};
   actions.notification.index = async(req, res) => {
-    const UpdatePost = crowi.model('UpdatePost');
-    let slackSetting = configManager.getConfigByPrefix('notification', 'slack:');
-    const hasSlackIwhUrl = !!configManager.getConfig('notification', 'slack:incomingWebhookUrl');
-    const hasSlackToken = !!configManager.getConfig('notification', 'slack:token');
 
-    if (!hasSlackIwhUrl) {
-      slackSetting['slack:incomingWebhookUrl'] = '';
-    }
-
-    if (req.session.slackSetting) {
-      slackSetting = req.session.slackSetting;
-      req.session.slackSetting = null;
-    }
-
-    const globalNotifications = await GlobalNotificationSetting.findAll();
-    const userNotifications = await UpdatePost.findAll();
-
-    return res.render('admin/notification', {
-      userNotifications,
-      slackSetting,
-      hasSlackIwhUrl,
-      hasSlackToken,
-      globalNotifications,
-    });
-  };
-
-  // app.post('/admin/notification/slackSetting' , admin.notification.slackauth);
-  actions.notification.slackSetting = async function(req, res) {
-    const slackSetting = req.form.slackSetting;
-
-    if (req.form.isValid) {
-      await configManager.updateConfigsInTheSameNamespace('notification', slackSetting);
-      req.flash('successMessage', ['Successfully Updated!']);
-
-      // Re-setup
-      crowi.setupSlack().then(() => {
-      });
-    }
-    else {
-      req.flash('errorMessage', req.form.errors);
-    }
-
-    return res.redirect('/admin/notification');
+    return res.render('admin/notification');
   };
 
   // app.get('/admin/notification/slackAuth'     , admin.notification.slackauth);
@@ -295,25 +197,6 @@ module.exports = function(crowi, app) {
       });
   };
 
-  // app.post('/admin/notification/slackIwhSetting' , admin.notification.slackIwhSetting);
-  actions.notification.slackIwhSetting = async function(req, res) {
-    const slackIwhSetting = req.form.slackIwhSetting;
-
-    if (req.form.isValid) {
-      await configManager.updateConfigsInTheSameNamespace('notification', slackIwhSetting);
-      req.flash('successMessage', ['Successfully Updated!']);
-
-      // Re-setup
-      crowi.setupSlack().then(() => {
-        return res.redirect('/admin/notification#slack-incoming-webhooks');
-      });
-    }
-    else {
-      req.flash('errorMessage', req.form.errors);
-      return res.redirect('/admin/notification#slack-incoming-webhooks');
-    }
-  };
-
   // app.post('/admin/notification/slackSetting/disconnect' , admin.notification.disconnectFromSlack);
   actions.notification.disconnectFromSlack = async function(req, res) {
     await configManager.updateConfigsInTheSameNamespace('notification', { 'slack:token': '' });
@@ -325,147 +208,28 @@ module.exports = function(crowi, app) {
   actions.globalNotification = {};
   actions.globalNotification.detail = async(req, res) => {
     const notificationSettingId = req.params.id;
-    const renderVars = {};
+    let globalNotification;
 
     if (notificationSettingId) {
       try {
-        renderVars.setting = await GlobalNotificationSetting.findOne({ _id: notificationSettingId });
+        globalNotification = await GlobalNotificationSetting.findOne({ _id: notificationSettingId });
       }
       catch (err) {
         logger.error(`Error in finding a global notification setting with {_id: ${notificationSettingId}}`);
       }
     }
 
-    return res.render('admin/global-notification-detail', renderVars);
-  };
-
-  actions.globalNotification.create = (req, res) => {
-    const form = req.form.notificationGlobal;
-    let setting;
-
-    switch (form.notifyToType) {
-      case GlobalNotificationSetting.TYPE.MAIL:
-        setting = new GlobalNotificationMailSetting(crowi);
-        setting.toEmail = form.toEmail;
-        break;
-      case GlobalNotificationSetting.TYPE.SLACK:
-        setting = new GlobalNotificationSlackSetting(crowi);
-        setting.slackChannels = form.slackChannels;
-        break;
-      default:
-        logger.error('GlobalNotificationSetting Type Error: undefined type');
-        req.flash('errorMessage', 'Error occurred in creating a new global notification setting: undefined notification type');
-        return res.redirect('/admin/notification#global-notification');
-    }
-
-    setting.triggerPath = form.triggerPath;
-    setting.triggerEvents = getNotificationEvents(form);
-    setting.save();
-
-    return res.redirect('/admin/notification#global-notification');
-  };
-
-  actions.globalNotification.update = async(req, res) => {
-    const form = req.form.notificationGlobal;
-
-    const models = {
-      [GlobalNotificationSetting.TYPE.MAIL]: GlobalNotificationMailSetting,
-      [GlobalNotificationSetting.TYPE.SLACK]: GlobalNotificationSlackSetting,
-    };
-
-    let setting = await GlobalNotificationSetting.findOne({ _id: form.id });
-    setting = setting.toObject();
-
-    // when switching from one type to another,
-    // remove toEmail from slack setting and slackChannels from mail setting
-    if (setting.__t !== form.notifyToType) {
-      setting = models[setting.__t].hydrate(setting);
-      setting.toEmail = undefined;
-      setting.slackChannels = undefined;
-      await setting.save();
-      setting = setting.toObject();
-    }
-
-    switch (form.notifyToType) {
-      case GlobalNotificationSetting.TYPE.MAIL:
-        setting = GlobalNotificationMailSetting.hydrate(setting);
-        setting.toEmail = form.toEmail;
-        break;
-      case GlobalNotificationSetting.TYPE.SLACK:
-        setting = GlobalNotificationSlackSetting.hydrate(setting);
-        setting.slackChannels = form.slackChannels;
-        break;
-      default:
-        logger.error('GlobalNotificationSetting Type Error: undefined type');
-        req.flash('errorMessage', 'Error occurred in updating the global notification setting: undefined notification type');
-        return res.redirect('/admin/notification#global-notification');
-    }
-
-    setting.__t = form.notifyToType;
-    setting.triggerPath = form.triggerPath;
-    setting.triggerEvents = getNotificationEvents(form);
-    await setting.save();
-
-    return res.redirect('/admin/notification#global-notification');
-  };
-
-  actions.globalNotification.remove = async(req, res) => {
-    const id = req.params.id;
-
-    try {
-      await GlobalNotificationSetting.findOneAndRemove({ _id: id });
-      return res.redirect('/admin/notification#global-notification');
-    }
-    catch (err) {
-      req.flash('errorMessage', 'Error in deleting global notification setting');
-      return res.redirect('/admin/notification#global-notification');
-    }
-  };
-
-  const getNotificationEvents = (form) => {
-    const triggerEvents = [];
-    const triggerEventKeys = Object.keys(form).filter((key) => { return key.match(/^triggerEvent/) });
-    triggerEventKeys.forEach((key) => {
-      if (form[key]) {
-        triggerEvents.push(form[key]);
-      }
-    });
-    return triggerEvents;
+    return res.render('admin/global-notification-detail', { globalNotification });
   };
 
   actions.search = {};
   actions.search.index = function(req, res) {
-    const search = crowi.getSearcher();
-    if (!search) {
-      return res.redirect('/admin');
-    }
-
     return res.render('admin/search', {});
   };
 
   actions.user = {};
   actions.user.index = async function(req, res) {
-    const activeUsers = await User.countListByStatus(User.STATUS_ACTIVE);
-    const userUpperLimit = aclService.userUpperLimit();
-    const isUserCountExceedsUpperLimit = await User.isUserCountExceedsUpperLimit();
-
-    const page = parseInt(req.query.page) || 1;
-
-    const result = await User.findUsersWithPagination({
-      page,
-      select: `${User.USER_PUBLIC_FIELDS} lastLoginAt`,
-      populate: User.IMAGE_POPULATION,
-    });
-
-    const pager = createPager(result.total, result.limit, result.page, result.pages, MAX_PAGE_LIST);
-
-    return res.render('admin/users', {
-      users: result.docs,
-      pager,
-      activeUsers,
-      userUpperLimit,
-      isUserCountExceedsUpperLimit,
-    });
+    return res.render('admin/users');
   };
 
   // これやったときの relation の挙動未確認
@@ -506,17 +270,7 @@ module.exports = function(crowi, app) {
 
   actions.externalAccount = {};
   actions.externalAccount.index = function(req, res) {
-    const page = parseInt(req.query.page) || 1;
-
-    ExternalAccount.findAllWithPagination({ page })
-      .then((result) => {
-        const pager = createPager(result.total, result.limit, result.page, result.pages, MAX_PAGE_LIST);
-
-        return res.render('admin/external-accounts', {
-          accounts: result.docs,
-          pager,
-        });
-      });
+    return res.render('admin/external-accounts');
   };
 
   actions.externalAccount.remove = async function(req, res) {
@@ -651,54 +405,6 @@ module.exports = function(crowi, app) {
   };
 
   actions.api = {};
-  actions.api.appSetting = async function(req, res) {
-    const form = req.form.settingForm;
-
-    if (req.form.isValid) {
-      debug('form content', form);
-
-      // mail setting ならここで validation
-      if (form['mail:from']) {
-        validateMailSetting(req, form, async(err, data) => {
-          debug('Error validate mail setting: ', err, data);
-          if (err) {
-            req.form.errors.push('SMTPを利用したテストメール送信に失敗しました。設定をみなおしてください。');
-            return res.json({ status: false, message: req.form.errors.join('\n') });
-          }
-
-          await configManager.updateConfigsInTheSameNamespace('crowi', form);
-          return res.json({ status: true });
-        });
-      }
-      else {
-        await configManager.updateConfigsInTheSameNamespace('crowi', form);
-        return res.json({ status: true });
-      }
-    }
-    else {
-      return res.json({ status: false, message: req.form.errors.join('\n') });
-    }
-  };
-
-  actions.api.asyncAppSetting = async(req, res) => {
-    const form = req.form.settingForm;
-
-    if (!req.form.isValid) {
-      return res.json({ status: false, message: req.form.errors.join('\n') });
-    }
-
-    debug('form content', form);
-
-    try {
-      await configManager.updateConfigsInTheSameNamespace('crowi', form);
-      return res.json({ status: true });
-    }
-    catch (err) {
-      logger.error(err);
-      return res.json({ status: false });
-    }
-  };
-
   actions.api.securitySetting = async function(req, res) {
     if (!req.form.isValid) {
       return res.json({ status: false, message: req.form.errors.join('\n') });
@@ -936,59 +642,6 @@ module.exports = function(crowi, app) {
     return res.json({ status: true });
   };
 
-  actions.api.customizeSetting = async function(req, res) {
-    const form = req.form.settingForm;
-
-    if (req.form.isValid) {
-      debug('form content', form);
-      await configManager.updateConfigsInTheSameNamespace('crowi', form);
-      customizeService.initCustomCss();
-      customizeService.initCustomTitle();
-
-      return res.json({ status: true });
-    }
-
-    return res.json({ status: false, message: req.form.errors.join('\n') });
-  };
-
-  // app.post('/_api/admin/notifications.add'    , admin.api.notificationAdd);
-  actions.api.notificationAdd = function(req, res) {
-    const UpdatePost = crowi.model('UpdatePost');
-    const pathPattern = req.body.pathPattern;
-    const channel = req.body.channel;
-
-    debug('notification.add', pathPattern, channel);
-    UpdatePost.create(pathPattern, channel, req.user)
-      .then((doc) => {
-        debug('Successfully save updatePost', doc);
-
-        // fixme: うーん
-        doc.creator = doc.creator._id.toString();
-        return res.json(ApiResponse.success({ updatePost: doc }));
-      })
-      .catch((err) => {
-        debug('Failed to save updatePost', err);
-        return res.json(ApiResponse.error());
-      });
-  };
-
-  // app.post('/_api/admin/notifications.remove' , admin.api.notificationRemove);
-  actions.api.notificationRemove = function(req, res) {
-    const UpdatePost = crowi.model('UpdatePost');
-    const id = req.body.id;
-
-    UpdatePost.remove(id)
-      .then(() => {
-        debug('Successfully remove updatePost');
-
-        return res.json(ApiResponse.success({}));
-      })
-      .catch((err) => {
-        debug('Failed to remove updatePost', err);
-        return res.json(ApiResponse.error());
-      });
-  };
-
   // app.get('/_api/admin/users.search' , admin.api.userSearch);
   actions.api.usersSearch = function(req, res) {
     const User = crowi.model('User');
@@ -1004,25 +657,6 @@ module.exports = function(crowi, app) {
       .catch((err) => {
         return res.json(ApiResponse.error());
       });
-  };
-
-  actions.api.toggleIsEnabledForGlobalNotification = async(req, res) => {
-    const id = req.query.id;
-    const isEnabled = (req.query.isEnabled === 'true');
-
-    try {
-      if (isEnabled) {
-        await GlobalNotificationSetting.enable(id);
-      }
-      else {
-        await GlobalNotificationSetting.disable(id);
-      }
-
-      return res.json(ApiResponse.success());
-    }
-    catch (err) {
-      return res.json(ApiResponse.error());
-    }
   };
 
   /**
@@ -1143,50 +777,6 @@ module.exports = function(crowi, app) {
       return res.json(ApiResponse.error(err));
     }
   };
-
-
-  actions.api.searchBuildIndex = async function(req, res) {
-    const search = crowi.getSearcher();
-    if (!search) {
-      return res.json(ApiResponse.error('ElasticSearch Integration is not set up.'));
-    }
-
-    try {
-      search.buildIndex();
-    }
-    catch (err) {
-      return res.json(ApiResponse.error(err));
-    }
-
-    return res.json(ApiResponse.success());
-  };
-
-  function validateMailSetting(req, form, callback) {
-    const mailer = crowi.mailer;
-    const option = {
-      host: form['mail:smtpHost'],
-      port: form['mail:smtpPort'],
-    };
-    if (form['mail:smtpUser'] && form['mail:smtpPassword']) {
-      option.auth = {
-        user: form['mail:smtpUser'],
-        pass: form['mail:smtpPassword'],
-      };
-    }
-    if (option.port === 465) {
-      option.secure = true;
-    }
-
-    const smtpClient = mailer.createSMTPClient(option);
-    debug('mailer setup for validate SMTP setting', smtpClient);
-
-    smtpClient.sendMail({
-      from: form['mail:from'],
-      to: req.user.email,
-      subject: 'Wiki管理設定のアップデートによるメール通知',
-      text: 'このメールは、WikiのSMTP設定のアップデートにより送信されています。',
-    }, callback);
-  }
 
   /**
    * validate setting form values for SAML

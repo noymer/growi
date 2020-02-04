@@ -59,11 +59,6 @@ module.exports = function(crowi, app) {
 
   app.get('/admin'                          , loginRequiredStrictly , adminRequired , admin.index);
   app.get('/admin/app'                      , loginRequiredStrictly , adminRequired , admin.app.index);
-  app.post('/_api/admin/settings/app'       , loginRequiredStrictly , adminRequired , csrf, form.admin.app, admin.api.appSetting);
-  app.post('/_api/admin/settings/siteUrl'   , loginRequiredStrictly , adminRequired , csrf, form.admin.siteUrl, admin.api.asyncAppSetting);
-  app.post('/_api/admin/settings/mail'      , loginRequiredStrictly , adminRequired , csrf, form.admin.mail, admin.api.appSetting);
-  app.post('/_api/admin/settings/aws'       , loginRequiredStrictly , adminRequired , csrf, form.admin.aws, admin.api.appSetting);
-  app.post('/_api/admin/settings/plugin'    , loginRequiredStrictly , adminRequired , csrf, form.admin.plugin, admin.api.appSetting);
 
   // security admin
   app.get('/admin/security'                     , loginRequiredStrictly , adminRequired , admin.security.index);
@@ -91,42 +86,21 @@ module.exports = function(crowi, app) {
   app.post('/passport/saml/callback'              , loginPassport.loginPassportSamlCallback);
 
   // markdown admin
-  app.get('/admin/markdown'                   , loginRequiredStrictly , adminRequired , admin.markdown.index); // TODO delete
-  app.post('/admin/markdown/lineBreaksSetting', loginRequiredStrictly , adminRequired , csrf, form.admin.markdown, admin.markdown.lineBreaksSetting); // change form name
-  app.post('/admin/markdown/xss-setting'      , loginRequiredStrictly , adminRequired , csrf, form.admin.markdownXss, admin.markdown.xssSetting);
-  app.post('/admin/markdown/presentationSetting', loginRequiredStrictly , adminRequired , csrf, form.admin.markdownPresentation, admin.markdown.presentationSetting);
+  app.get('/admin/markdown'                   , loginRequiredStrictly , adminRequired , admin.markdown.index);
 
-  // markdown admin
+  // customize admin
   app.get('/admin/customize'                , loginRequiredStrictly , adminRequired , admin.customize.index);
-  app.post('/_api/admin/customize/css'      , loginRequiredStrictly , adminRequired , csrf, form.admin.customcss, admin.api.customizeSetting);
-  app.post('/_api/admin/customize/script'   , loginRequiredStrictly , adminRequired , csrf, form.admin.customscript, admin.api.customizeSetting);
-  app.post('/_api/admin/customize/header'   , loginRequiredStrictly , adminRequired , csrf, form.admin.customheader, admin.api.customizeSetting);
-  app.post('/_api/admin/customize/theme'    , loginRequiredStrictly , adminRequired , csrf, form.admin.customtheme, admin.api.customizeSetting);
-  app.post('/_api/admin/customize/title'    , loginRequiredStrictly , adminRequired , csrf, form.admin.customtitle, admin.api.customizeSetting);
-  app.post('/_api/admin/customize/behavior' , loginRequiredStrictly , adminRequired , csrf, form.admin.custombehavior, admin.api.customizeSetting);
-  app.post('/_api/admin/customize/layout'   , loginRequiredStrictly , adminRequired , csrf, form.admin.customlayout, admin.api.customizeSetting);
-  app.post('/_api/admin/customize/features' , loginRequiredStrictly , adminRequired , csrf, form.admin.customfeatures, admin.api.customizeSetting);
-  app.post('/_api/admin/customize/highlightJsStyle' , loginRequiredStrictly , adminRequired , csrf, form.admin.customhighlightJsStyle, admin.api.customizeSetting);
 
   // search admin
   app.get('/admin/search'              , loginRequiredStrictly , adminRequired , admin.search.index);
-  app.post('/_api/admin/search/build'  , loginRequiredStrictly , adminRequired , csrf, admin.api.searchBuildIndex);
 
   // notification admin
   app.get('/admin/notification'              , loginRequiredStrictly , adminRequired , admin.notification.index);
-  app.post('/admin/notification/slackIwhSetting', loginRequiredStrictly , adminRequired , csrf, form.admin.slackIwhSetting, admin.notification.slackIwhSetting);
-  app.post('/admin/notification/slackSetting', loginRequiredStrictly , adminRequired , csrf, form.admin.slackSetting, admin.notification.slackSetting);
   app.get('/admin/notification/slackAuth'    , loginRequiredStrictly , adminRequired , admin.notification.slackAuth);
   app.get('/admin/notification/slackSetting/disconnect', loginRequiredStrictly , adminRequired , admin.notification.disconnectFromSlack);
-  app.post('/_api/admin/notification.add'    , loginRequiredStrictly , adminRequired , csrf, admin.api.notificationAdd);
-  app.post('/_api/admin/notification.remove' , loginRequiredStrictly , adminRequired , csrf, admin.api.notificationRemove);
   app.get('/_api/admin/users.search'         , loginRequiredStrictly , adminRequired , admin.api.usersSearch);
   app.get('/admin/global-notification/new'   , loginRequiredStrictly , adminRequired , admin.globalNotification.detail);
   app.get('/admin/global-notification/:id'   , loginRequiredStrictly , adminRequired , admin.globalNotification.detail);
-  app.post('/admin/global-notification/new'  , loginRequiredStrictly , adminRequired , form.admin.notificationGlobal, admin.globalNotification.create);
-  app.post('/_api/admin/global-notification/toggleIsEnabled', loginRequiredStrictly , adminRequired , admin.api.toggleIsEnabledForGlobalNotification);
-  app.post('/admin/global-notification/:id/update', loginRequiredStrictly , adminRequired , form.admin.notificationGlobal, admin.globalNotification.update);
-  app.post('/admin/global-notification/:id/remove', loginRequiredStrictly , adminRequired , admin.globalNotification.remove);
 
   app.get('/admin/users'                , loginRequiredStrictly , adminRequired , admin.user.index);
   app.post('/admin/user/:id/removeCompletely' , loginRequiredStrictly , adminRequired , csrf, admin.user.removeCompletely);

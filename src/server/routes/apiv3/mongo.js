@@ -20,6 +20,8 @@ module.exports = (crowi) => {
    *  /mongo/collections:
    *    get:
    *      tags: [Mongo]
+   *      operationId: getMongoCollections
+   *      summary: /mongo/collections
    *      description: get mongodb collections names
    *      responses:
    *        200:
@@ -34,7 +36,8 @@ module.exports = (crowi) => {
    *                      type: string
    */
   router.get('/collections', async(req, res) => {
-    const collections = Object.keys(mongoose.connection.collections);
+    const listCollectionsResult = await mongoose.connection.db.listCollections().toArray();
+    const collections = listCollectionsResult.map(collectionObj => collectionObj.name);
 
     // TODO: use res.apiv3
     return res.json({

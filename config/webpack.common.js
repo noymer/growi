@@ -8,6 +8,7 @@ const webpack = require('webpack');
  */
 const WebpackAssetsManifest = require('webpack-assets-manifest');
 const LodashModuleReplacementPlugin = require('lodash-webpack-plugin');
+const HardSourceWebpackPlugin = require('hard-source-webpack-plugin');
 const helpers = require('../src/lib/util/helpers');
 
 /*
@@ -43,6 +44,7 @@ module.exports = (options) => {
       'styles/theme-wood':          './src/client/styles/scss/theme/wood.scss',
       'styles/theme-christmas':          './src/client/styles/scss/theme/christmas.scss',
       'styles/theme-island':      './src/client/styles/scss/theme/island.scss',
+      'styles/theme-spring':      './src/client/styles/scss/theme/spring.scss',
       'styles/theme-antarctic':      './src/client/styles/scss/theme/antarctic.scss',
       // styles for external services
       'styles/style-hackmd':          './src/client/styles/hackmd/style.scss',
@@ -126,6 +128,14 @@ module.exports = (options) => {
       // ignore
       new webpack.IgnorePlugin(/^\.\/lib\/deflate\.js/, /markdown-it-plantuml/),
       new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
+
+      new HardSourceWebpackPlugin(),
+      new HardSourceWebpackPlugin.ExcludeModulePlugin([
+        {
+          // see https://github.com/mzgoddard/hard-source-webpack-plugin/blob/master/README.md#excludemoduleplugin
+          test: /mini-css-extract-plugin[\\/]dist[\\/]loader/,
+        },
+      ]),
 
       new LodashModuleReplacementPlugin({
         flattening: true,

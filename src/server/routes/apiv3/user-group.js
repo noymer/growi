@@ -9,11 +9,16 @@ const router = express.Router();
 const { body, param, query } = require('express-validator/check');
 const { sanitizeQuery } = require('express-validator/filter');
 
-const validator = {};
+const mongoose = require('mongoose');
 
-const { ObjectId } = require('mongoose').Types;
+const ErrorV3 = require('../../models/vo/error-apiv3');
 
 const { toPagingLimit, toPagingOffset } = require('../../util/express-validator/sanitizer');
+
+const validator = {};
+
+const { ObjectId } = mongoose.Types;
+
 
 /**
  * @swagger
@@ -27,7 +32,6 @@ module.exports = (crowi) => {
   const csrf = require('../../middleware/csrf')(crowi);
 
   const {
-    ErrorV3,
     UserGroup,
     UserGroupRelation,
     User,
@@ -42,6 +46,8 @@ module.exports = (crowi) => {
    *    /user-groups:
    *      get:
    *        tags: [UserGroup]
+   *        operationId: getUserGroup
+   *        summary: /user-groups
    *        description: Get usergroups
    *        responses:
    *          200:
@@ -80,6 +86,8 @@ module.exports = (crowi) => {
    *    /user-groups:
    *      post:
    *        tags: [UserGroup]
+   *        operationId: createUserGroup
+   *        summary: /user-groups
    *        description: Adds userGroup
    *        requestBody:
    *          required: true
@@ -130,6 +138,8 @@ module.exports = (crowi) => {
    *    /user-groups/{id}:
    *      delete:
    *        tags: [UserGroup]
+   *        operationId: deleteUserGroup
+   *        summary: /user-groups/{id}
    *        description: Deletes userGroup
    *        parameters:
    *          - name: id
@@ -190,6 +200,8 @@ module.exports = (crowi) => {
    *    /user-groups/{id}:
    *      put:
    *        tags: [UserGroup]
+   *        operationId: updateUserGroups
+   *        summary: /user-groups/{id}
    *        description: Update userGroup
    *        parameters:
    *          - name: id
@@ -245,6 +257,8 @@ module.exports = (crowi) => {
    *    /user-groups/{id}/users:
    *      get:
    *        tags: [UserGroup]
+   *        operationId: getUsersUserGroups
+   *        summary: /user-groups/{id}/users
    *        description: Get users related to the userGroup
    *        parameters:
    *          - name: id
@@ -293,6 +307,8 @@ module.exports = (crowi) => {
    *    /user-groups/{id}/unrelated-users:
    *      get:
    *        tags: [UserGroup]
+   *        operationId: getUnrelatedUsersUserGroups
+   *        summary: /user-groups/{id}/unrelated-users
    *        description: Get users unrelated to the userGroup
    *        parameters:
    *          - name: id
@@ -316,10 +332,17 @@ module.exports = (crowi) => {
    */
   router.get('/:id/unrelated-users', loginRequiredStrictly, adminRequired, async(req, res) => {
     const { id } = req.params;
+    const {
+      searchWord, searchType, isAlsoNameSearched, isAlsoMailSearched,
+    } = req.query;
+
+    const queryOptions = {
+      searchWord, searchType, isAlsoNameSearched, isAlsoMailSearched,
+    };
 
     try {
       const userGroup = await UserGroup.findById(id);
-      const users = await UserGroupRelation.findUserByNotRelatedGroup(userGroup);
+      const users = await UserGroupRelation.findUserByNotRelatedGroup(userGroup, queryOptions);
 
       return res.apiv3({ users });
     }
@@ -342,6 +365,8 @@ module.exports = (crowi) => {
    *    /user-groups/{id}/users:
    *      post:
    *        tags: [UserGroup]
+   *        operationId: addUserUserGroups
+   *        summary: /user-groups/{id}/users
    *        description: Add a user to the userGroup
    *        parameters:
    *          - name: id
@@ -377,6 +402,14 @@ module.exports = (crowi) => {
         User.findUserByUsername(username),
       ]);
 
+      // check for duplicate users in groups
+      const isRelatedUserForGroup = await UserGroupRelation.isRelatedUserForGroup(userGroup, user);
+
+      if (isRelatedUserForGroup) {
+        logger.warn('The user is already joined');
+        return res.apiv3();
+      }
+
       const userGroupRelation = await UserGroupRelation.createRelation(userGroup, user);
       await userGroupRelation.populate('relatedUser', User.USER_PUBLIC_FIELDS).execPopulate();
 
@@ -401,6 +434,8 @@ module.exports = (crowi) => {
    *    /user-groups/{id}/users:
    *      delete:
    *        tags: [UserGroup]
+   *        operationId: deleteUsersUserGroups
+   *        summary: /user-groups/{id}/users
    *        description: remove a user from the userGroup
    *        parameters:
    *          - name: id
@@ -461,6 +496,8 @@ module.exports = (crowi) => {
    *    /user-groups/{id}/user-group-relations:
    *      get:
    *        tags: [UserGroup]
+   *        operationId: getUserGroupRelationsUserGroups
+   *        summary: /user-groups/{id}/user-group-relations
    *        description: Get the user group relations for the userGroup
    *        parameters:
    *          - name: id
@@ -513,6 +550,8 @@ module.exports = (crowi) => {
    *    /user-groups/{id}/pages:
    *      get:
    *        tags: [UserGroup]
+   *        operationId: getPagesUserGroups
+   *        summary: /user-groups/{id}/pages
    *        description: Get closed pages for the userGroup
    *        parameters:
    *          - name: id

@@ -40,7 +40,7 @@ class UserGroupPageList extends React.Component {
       const { total, pages } = res.data;
 
       this.setState({
-        total,
+        total: total || 0,
         activePage: pageNum,
         currentPages: pages,
       });
@@ -58,7 +58,7 @@ class UserGroupPageList extends React.Component {
         <ul className="page-list-ul page-list-ul-flat">
           {this.state.currentPages.map((page) => { return <Page key={page._id} page={page} /> })}
         </ul>
-        {userGroupDetailContainer.state.relatedPages.length === 0 ? <p>{ t('user_group_management.no_pages') }</p> : null}
+        {userGroupDetailContainer.state.relatedPages.length === 0 ? <p>{t('admin:user_group_management.no_pages')}</p> : null}
         <PaginationWrapper
           activePage={this.state.activePage}
           changePage={this.handlePageChange}

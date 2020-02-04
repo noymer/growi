@@ -22,12 +22,6 @@ const TYPES = {
  *  So, parameters of these are under consideration.
  */
 const ENV_VAR_NAME_TO_CONFIG_INFO = {
-  // ELASTICSEARCH_URI: {
-  //   ns:      ,
-  //   key:     ,
-  //   type:    ,
-  //   default:
-  // },
   // FILE_UPLOAD: {
   //   ns:      ,
   //   key:     ,
@@ -136,17 +130,44 @@ const ENV_VAR_NAME_TO_CONFIG_INFO = {
     type:    TYPES.NUMBER,
     default: Infinity,
   },
+  FILE_UPLOAD_DISABLED: {
+    ns:      'crowi',
+    key:     'app:fileUploadDisabled',
+    type:    TYPES.BOOLEAN,
+    default: false,
+  },
+  ELASTICSEARCH_URI: {
+    ns:      'crowi',
+    key:     'app:elasticsearchUri',
+    type:    TYPES.STRING,
+    default: null,
+  },
+  SEARCHBOX_SSL_URL: {
+    ns:      'crowi',
+    key:     'app:searchboxSslUrl',
+    type:    TYPES.STRING,
+    default: null,
+  },
   MONGO_GRIDFS_TOTAL_LIMIT: {
     ns:      'crowi',
     key:     'gridfs:totalLimit',
     type:    TYPES.NUMBER,
-    default: null,
+    default: null, // set null in default for backward compatibility
+    //                cz: Newer system respects FILE_UPLOAD_TOTAL_LIMIT.
+    //                    If the default value of MONGO_GRIDFS_TOTAL_LIMIT is Infinity,
+    //                      the system can't distinguish between "not specified" and "Infinity is specified".
   },
   FORCE_WIKI_MODE: {
     ns:      'crowi',
     key:     'security:wikiMode',
     type:    TYPES.STRING,
     default: undefined,
+  },
+  USER_UPPER_LIMIT: {
+    ns:      'crowi',
+    key:     'security:userUpperLimit',
+    type:    TYPES.NUMBER,
+    default: Infinity,
   },
   LOCAL_STRATEGY_ENABLED: {
     ns:      'crowi',

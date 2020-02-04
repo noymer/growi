@@ -13,7 +13,15 @@ module.exports = (crowi) => {
 
   router.use('/healthcheck', require('./healthcheck')(crowi));
 
+  router.use('/admin-home', require('./admin-home')(crowi));
+
   router.use('/markdown-setting', require('./markdown-setting')(crowi));
+
+  router.use('/app-settings', require('./app-settings')(crowi));
+
+  router.use('/customize-setting', require('./customize-setting')(crowi));
+
+  router.use('/notification-setting', require('./notification-setting')(crowi));
 
   router.use('/users', require('./users')(crowi));
 
@@ -28,6 +36,8 @@ module.exports = (crowi) => {
   router.use('/import', require('./import')(crowi));
 
   router.use('/statistics', require('./statistics')(crowi));
+
+  router.use('/search', require('./search')(crowi));
 
   return router;
 };

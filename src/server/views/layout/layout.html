@@ -115,7 +115,7 @@
         </li>
         #}
         <li>
-          {% if searchConfigured() %}
+          {% if isSearchServiceConfigured() %}
           <div class="navbar-form navbar-left search-top" role="search" id="search-top"></div>
           {% endif %}
         </li>
@@ -134,6 +134,11 @@
         <li class="nav-item-create-page">
           <a href="#" data-target="#create-page" data-toggle="modal" class="create-page">
             <i class="icon-pencil"></i><span>{{ t('New') }}</span>
+          </a>
+        </li>
+        <li class="nav-item-help">
+          <a href="https://docs.growi.org/" target="_blank">
+            <i class="icon-question"></i><span>{{ t('Help') }}</span><span class="text-muted small"><i class="icon-share-alt"></i></span>
           </a>
         </li>
         <li class="dropdown">
@@ -172,7 +177,7 @@
     <div class="sidebar-nav navbar-collapse slimscrollsidebar">
       <ul class="nav" id="side-menu">
         <li class="sidebar-search hidden-sm hidden-md hidden-lg">
-          {% if searchConfigured() %}
+          {% if isSearchServiceConfigured() %}
           <div class="search-sidebar" role="search" id="search-sidebar"></div>
           {% endif %}
         </li>

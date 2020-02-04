@@ -86,6 +86,8 @@ module.exports = (crowi) => {
    *  /statistics/user:
    *    get:
    *      tags: [Statistics]
+   *      operationId: getStatisticsUser
+   *      summary: /statistics/user
    *      description: Get statistics for user
    *      responses:
    *        200:
